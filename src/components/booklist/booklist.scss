@@ -1,0 +1,20 @@
+.bookList {
+    width: 100%;
+    margin: 20px 0;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  
+    th, td {
+      text-align: left;
+      padding: 8px;
+      border-bottom: 1px solid #ccc;
+    }
+  
+    th {
+      background-color: #f4f4f4;
+    }
+  }
+  
