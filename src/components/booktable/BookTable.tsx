@@ -1,13 +1,14 @@
 import React from 'react';
-import { Book, BookProps } from '../../types';
+import { Book } from '../../types';
 import BookItem from '../bookitem/BookItem';
 import './booktable.scss'
 
 interface BookTableProps {
   books: Book[];
   onEdit: (book: Book) => void;
-  onDelete: (bookId: string) => void;
+  onDelete: (bookId: number) => void; 
 }
+
 
 const BookTable: React.FC<BookTableProps> = ({ books, onEdit, onDelete }) => {
   return (

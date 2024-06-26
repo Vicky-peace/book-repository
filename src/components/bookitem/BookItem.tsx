@@ -5,8 +5,9 @@ import './bookItem.scss';
 interface BookItemProps {
   book: Book;
   onEdit: (book: Book) => void;
-  onDelete: (bookId: string) => void;
+  onDelete: (bookId: number) => void; 
 }
+
 
 function BookItem({ book, onEdit, onDelete }: BookItemProps) {
   return (

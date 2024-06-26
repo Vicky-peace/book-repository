@@ -6,7 +6,7 @@ import './booklist.scss';
 interface BookListProps {
   books: Book[];
   onEdit: (book: Book) => void;
-  onDelete: (bookId: string) => void;
+  onDelete: (bookId: number) => void;
 }
 
 function BookList({ books, onEdit, onDelete }: BookListProps) {

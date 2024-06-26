@@ -1,28 +1,40 @@
-import React from 'react';
+import {useState} from 'react';
 import BookForm from './components/bookform/BookForm';
 import BookList from './components/booklist/BookList';
 import SearchComponent from './components/searchComponent/SearchComponent';
-import { Book } from './types';  
+import { Book } from './types';
 
 import './App.scss';
 
 function App() {
- 
-  const [books, setBooks] = React.useState<Book[]>([]);
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [books, setBooks] = useState<Book[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [editBook, setEditBook] = useState<Book | null>(null);
 
- 
   const handleFormSubmit = (book: Book) => {
-    const updatedBooks = [...books, book];
-    setBooks(updatedBooks);
+    if (book.id && books.some(b => b.id === book.id)) {
+      // Update existing book
+      setBooks(books.map(b => b.id === book.id ? book : b));
+    } else {
+      // Add new book
+      const newBook = { ...book, id: Math.random() }; // Ensure unique ID
+      setBooks([...books, newBook]);
+    }
+    setEditBook(null); // Clear editBook state
   };
 
-  
+  const handleEdit = (book: Book) => {
+    setEditBook(book); // Set book to be edited
+  };
+
+  const handleDelete = (bookId: number) => {
+    setBooks(books.filter(book => book.id !== bookId));
+  };
+
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
-  
   const filteredBooks = books.filter(book =>
     book.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -30,10 +42,9 @@ function App() {
   return (
     <div className="app">
       <SearchComponent onSearch={handleSearch} />
-      <BookForm onSubmit={handleFormSubmit} />
-      <BookList books={filteredBooks} onEdit={() => {}} onDelete={() => {}} />
+      <BookForm onSubmit={handleFormSubmit} initialData={editBook} />
+      <BookList books={filteredBooks} onEdit={handleEdit} onDelete={handleDelete} />
     </div>
   );
 }
-
 export default App;

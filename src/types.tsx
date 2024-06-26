@@ -1,6 +1,6 @@
 // Define the structure of a book object
 export interface Book {
-    id: string;
+    id: number;
     title: string;
     author: string;
     year: string;
