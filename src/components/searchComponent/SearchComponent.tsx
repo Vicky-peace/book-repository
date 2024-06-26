@@ -1,28 +1,32 @@
-import React, { useState } from 'react';
+import  { useEffect, useRef } from 'react';
 import { SearchProps } from '../../types';
-import './searchComponent.scss'; 
+import './searchComponent.scss';
 
 function SearchComponent({ onSearch }: SearchProps) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const searchTermRef = useRef<HTMLInputElement>(null);  // useRef to hold the input element
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
+  // Automatically focus the input when the component mounts
+  useEffect(() => {
+    searchTermRef.current?.focus();  // Focus the input element on component mount
+  }, []);
 
-  const handleSearchClick = () => {
-    onSearch(searchTerm); // Trigger the search action passed from the parent component
+  // Function to handle input changes and trigger the search action
+  const handleSearchChange = () => {
+    if (searchTermRef.current) {
+      onSearch(searchTermRef.current.value);  // Use the current value of the input for the search
+    }
   };
 
   return (
     <div className="search">
       <input
         type="text"
+        ref={searchTermRef}  // Attach the ref to the input element
         placeholder="Search books..."
-        value={searchTerm}
-        onChange={handleInputChange}
+        onChange={handleSearchChange}  // Call handleSearchChange on input change
         className="search-input"
       />
-      <button onClick={handleSearchClick} className="search-button">
+      <button onClick={handleSearchChange} className="search-button">
         Search
       </button>
     </div>
