@@ -1,38 +1,24 @@
 .bookItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-  
+  td {
+    padding: 12px 15px; 
+    border-bottom: 1px solid #ddd; 
+
     &:last-child {
-      border-bottom: none;
-    }
-  
-    .bookDetails {
-      flex: 1;
-      padding-right: 10px;
-  
-      & > div {
-        margin-right: 20px;
-        display: inline-block;
-      }
-    }
-  
-    .actions {
-      button {
-        margin-left: 10px;
-        padding: 5px 15px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-  
-        &:hover {
-          background-color: #0056b3;
-        }
-      }
+      text-align: right; 
     }
   }
-  
+
+  .actions button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}

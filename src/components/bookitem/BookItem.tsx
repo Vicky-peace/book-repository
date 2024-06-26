@@ -1,6 +1,4 @@
-
 import { Book } from '../../types';
-import './bookItem.scss';
 
 interface BookItemProps {
   book: Book;
@@ -8,16 +6,17 @@ interface BookItemProps {
   onDelete: (bookId: number) => void; 
 }
 
-
 function BookItem({ book, onEdit, onDelete }: BookItemProps) {
   return (
-    <div className='item'>
-      <div>{book.title}</div>
-      <div>{book.author}</div>
-      <div>{book.year}</div>
-      <button onClick={() => onEdit(book)}>Edit</button>
-      <button onClick={() => onDelete(book.id)}>Delete</button>
-    </div>
+    <tr className='bookItem'> 
+      <td>{book.title}</td>
+      <td>{book.author}</td>
+      <td>{book.year}</td>
+      <td className='actions'>
+        <button onClick={() => onEdit(book)}>Edit</button>
+        <button onClick={() => onDelete(book.id)}>Delete</button>
+      </td>
+    </tr>
   );
 }
 

@@ -1,34 +1,34 @@
-import {useState} from 'react';
+import React from 'react';
 import BookForm from './components/bookform/BookForm';
 import BookList from './components/booklist/BookList';
 import SearchComponent from './components/searchComponent/SearchComponent';
+import useLocalStorage from './customHooks/useLocalStorage';
 import { Book } from './types';
 
 import './App.scss';
 
 function App() {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [editBook, setEditBook] = useState<Book | null>(null);
+  // Declare the use of useLocalStorage with the Book array type
+  const [books, setBooks] = useLocalStorage<Book[]>('books', []);
+  const [searchQuery, setSearchQuery] = React.useState<string>('');
+  const [editBook, setEditBook] = React.useState<Book | null>(null);
 
   const handleFormSubmit = (book: Book) => {
-    if (book.id && books.some(b => b.id === book.id)) {
-      // Update existing book
+    if (editBook && books.some(b => b.id === book.id)) {
       setBooks(books.map(b => b.id === book.id ? book : b));
     } else {
-      // Add new book
-      const newBook = { ...book, id: Math.random() }; // Ensure unique ID
+      const newBook = { ...book, id: Math.random() }; // Ensure unique ID for new books
       setBooks([...books, newBook]);
     }
-    setEditBook(null); // Clear editBook state
-  };
-
-  const handleEdit = (book: Book) => {
-    setEditBook(book); // Set book to be edited
+    setEditBook(null); // Reset edit book after submitting
   };
 
   const handleDelete = (bookId: number) => {
     setBooks(books.filter(book => book.id !== bookId));
+  };
+
+  const handleEdit = (book: Book) => {
+    setEditBook(book);
   };
 
   const handleSearch = (query: string) => {
@@ -47,4 +47,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
