@@ -1,5 +1,5 @@
 import { Book } from '../../types';
-
+import './bookItem.scss'
 interface BookItemProps {
   book: Book;
   onEdit: (book: Book) => void;
