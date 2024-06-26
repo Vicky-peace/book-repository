@@ -1,17 +1,17 @@
-import React from 'react';
+import  { useState } from 'react';
 import BookForm from './components/bookform/BookForm';
 import BookList from './components/booklist/BookList';
 import SearchComponent from './components/searchComponent/SearchComponent';
+import Modal from './components/modal/Modal'; 
 import useLocalStorage from './customHooks/useLocalStorage';
 import { Book } from './types';
-
 import './App.scss';
 
 function App() {
-  // Declare the use of useLocalStorage with the Book array type
   const [books, setBooks] = useLocalStorage<Book[]>('books', []);
-  const [searchQuery, setSearchQuery] = React.useState<string>('');
-  const [editBook, setEditBook] = React.useState<Book | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [editBook, setEditBook] = useState<Book | null>(null);
+  const [isModalOpen, setModalOpen] = useState(false); 
 
   const handleFormSubmit = (book: Book) => {
     if (editBook && books.some(b => b.id === book.id)) {
@@ -20,7 +20,8 @@ function App() {
       const newBook = { ...book, id: Math.random() }; // Ensure unique ID for new books
       setBooks([...books, newBook]);
     }
-    setEditBook(null); // Reset edit book after submitting
+    setEditBook(null);
+    setModalOpen(false); // Close modal on form submit
   };
 
   const handleDelete = (bookId: number) => {
@@ -29,6 +30,7 @@ function App() {
 
   const handleEdit = (book: Book) => {
     setEditBook(book);
+    setModalOpen(true); 
   };
 
   const handleSearch = (query: string) => {
@@ -42,7 +44,10 @@ function App() {
   return (
     <div className="app">
       <SearchComponent onSearch={handleSearch} />
-      <BookForm onSubmit={handleFormSubmit} initialData={editBook} />
+      <button onClick={() => setModalOpen(true)} className='add-book-btn'>Add Book</button>
+      <Modal show={isModalOpen} onClose={() => setModalOpen(false)}>
+        <BookForm onSubmit={handleFormSubmit} initialData={editBook} />
+      </Modal>
       <BookList books={filteredBooks} onEdit={handleEdit} onDelete={handleDelete} />
     </div>
   );
