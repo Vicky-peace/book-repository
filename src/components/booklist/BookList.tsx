@@ -3,6 +3,7 @@ import BookItem from '../bookitem/BookItem';
 import Pagination from '../pagination/Pagination';
 import { useBookContext } from '../../context/BookContext';
 import { Book } from '../../types';
+import './booklist.scss';
 
 interface BookListProps {
   books: Book[];  // Corrected from 'book' to 'books' for clarity and accuracy
