@@ -5,7 +5,7 @@ import SearchComponent from './components/searchComponent/SearchComponent';
 import Modal from './components/modal/Modal';
 import { useBookContext } from './context/BookContext';
 import { Book } from './types';
-import { addBook, updateBook, deleteBook } from './api';  // Ensure these are imported
+import { addBook, updateBook, deleteBook } from './api';
 import './App.scss';
 
 function App() {
@@ -14,18 +14,17 @@ function App() {
   const [editBook, setEditBook] = useState<Book | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const closeModal = () => setModalOpen(false);
+
   const handleFormSubmit = (book: Book) => {
-    if (editBook) {
-      updateBook(book).then((updatedBook: Book) => {
-        dispatch({ type: 'UPDATE_BOOK', payload: updatedBook });
-        setModalOpen(false);
-      }).catch((err: Error) => console.error('Failed to update book:', err));
-    } else {
-      addBook(book).then((addedBook: Book) => {
-        dispatch({ type: 'ADD_BOOK', payload: addedBook });
-        setModalOpen(false);
-      }).catch((err: Error) => console.error('Failed to add book:', err));
-    }
+    const operation = editBook ? updateBook : addBook; // Choose the operation based on edit state
+    operation(book).then((savedBook: Book) => {
+      const actionType = editBook ? 'UPDATE_BOOK' : 'ADD_BOOK';
+      dispatch({ type: actionType, payload: savedBook });
+      closeModal(); // Close modal after successful operation
+    }).catch((err: Error) => {
+      console.error(`Failed to ${editBook ? 'update' : 'add'} book:`, err);
+    });
   };
 
   const handleDelete = (bookId: number) => {
@@ -44,15 +43,15 @@ function App() {
   };
 
   const filteredBooks = state.books.filter(book =>
-    book.title?.toLowerCase().includes(searchQuery.toLowerCase())
+    book.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="app">
       <SearchComponent onSearch={handleSearch} />
       <button onClick={() => setModalOpen(true)} className='add-book-btn'>Add Book</button>
-      <Modal show={isModalOpen} onClose={() => setModalOpen(false)}>
-        <BookForm onSubmit={handleFormSubmit} initialData={editBook} />
+      <Modal show={isModalOpen} onClose={closeModal}>
+        <BookForm onSubmit={handleFormSubmit} initialData={editBook} closeModal={closeModal} />
       </Modal>
       <BookList books={filteredBooks} onEdit={handleEdit} onDelete={handleDelete} />
     </div>

@@ -1,5 +1,6 @@
 import React, { useState, FormEvent, useEffect, useContext } from 'react';
 import { BookContext } from '../../context/BookContext';
+import { toast } from 'react-toastify';
 import './bookform.scss';
 import { addBook,updateBook } from '../../api';
 import { Book } from '../../types';
@@ -7,9 +8,10 @@ import { Book } from '../../types';
 interface BookFormProps {
   onSubmit: (book: Book) => void;
   initialData?: Book | null;
+  closeModal: () => void;
 }
 
-const BookForm = ({  initialData }: BookFormProps): JSX.Element => {
+const BookForm = ({  initialData, closeModal }: BookFormProps): JSX.Element => {
   const [book, setBook] = useState<Book>({ id: 0, title: '', author: '', year: '' });
   
   // Using non-null assertion operator since we're sure the context is never undefined
@@ -44,10 +46,13 @@ const BookForm = ({  initialData }: BookFormProps): JSX.Element => {
         : await addBook(submissionBook);
   
       dispatch({ type: initialData ? 'UPDATE_BOOK' : 'ADD_BOOK', payload: savedBook });
+      toast.success(`Book ${initialData ? 'updated' : 'added'} successfully!`);
       resetForm();
+      closeModal();
     } catch (error: any) {
       console.error('Error submitting book:', error.response?.data || error.message);
       alert(`Failed to submit book: ${error.response?.data.error || error.message}`);
+      toast.error(`Failed to ${initialData ? 'update' : 'add'} book: ${error.response?.data.error || error.message}`);
     }
   };
   

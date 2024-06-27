@@ -23,7 +23,6 @@ const BookItem = ({ book, onEdit }: BookItemProps) => {
   };
 
   const handleEdit = () => {
-    console.log("Edit book", book);
     onEdit(book);
   };
 
