@@ -6,6 +6,9 @@ import Modal from './components/modal/Modal';
 import { useBookContext } from './context/BookContext';
 import { Book } from './types';
 import { addBook, updateBook, deleteBook } from './api';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.scss';
 
 function App() {
@@ -22,7 +25,9 @@ function App() {
       const actionType = editBook ? 'UPDATE_BOOK' : 'ADD_BOOK';
       dispatch({ type: actionType, payload: savedBook });
       closeModal(); // Close modal after successful operation
+     
     }).catch((err: Error) => {
+      
       console.error(`Failed to ${editBook ? 'update' : 'add'} book:`, err);
     });
   };
@@ -30,6 +35,7 @@ function App() {
   const handleDelete = (bookId: number) => {
     deleteBook(bookId).then(() => {
       dispatch({ type: 'DELETE_BOOK', payload: bookId });
+      toast.success("Book deleted successfully!");
     }).catch((err: Error) => console.error('Failed to delete book:', err));
   };
 
@@ -49,11 +55,13 @@ function App() {
   return (
     <div className="app">
       <SearchComponent onSearch={handleSearch} />
+      <ToastContainer/>
       <button onClick={() => setModalOpen(true)} className='add-book-btn'>Add Book</button>
       <Modal show={isModalOpen} onClose={closeModal}>
         <BookForm onSubmit={handleFormSubmit} initialData={editBook} closeModal={closeModal} />
       </Modal>
       <BookList books={filteredBooks} onEdit={handleEdit} onDelete={handleDelete} />
+
     </div>
   );
 }

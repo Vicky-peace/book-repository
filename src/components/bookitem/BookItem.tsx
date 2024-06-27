@@ -3,6 +3,7 @@ import { BookContext } from '../../context/BookContext';
 import { deleteBook } from '../../api'; 
 import './bookItem.scss';
 import { Book } from '../../types';
+import {toast} from 'react-toastify';
 
 interface BookItemProps {
   book: Book;
@@ -17,7 +18,9 @@ const BookItem = ({ book, onEdit }: BookItemProps) => {
     try {
       await deleteBook(bookId);
       dispatch({ type: 'DELETE_BOOK', payload: bookId });
+      toast.success("Book deleted successfully!");
     } catch (error) {
+      toast.error("Failed to delete book!");
       console.error('Error deleting book:', error);
     }
   };

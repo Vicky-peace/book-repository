@@ -46,13 +46,14 @@ const BookForm = ({  initialData, closeModal }: BookFormProps): JSX.Element => {
         : await addBook(submissionBook);
   
       dispatch({ type: initialData ? 'UPDATE_BOOK' : 'ADD_BOOK', payload: savedBook });
-      toast.success(`Book ${initialData ? 'updated' : 'added'} successfully!`);
       resetForm();
       closeModal();
+      toast.success("Book added successfully!");
     } catch (error: any) {
       console.error('Error submitting book:', error.response?.data || error.message);
       alert(`Failed to submit book: ${error.response?.data.error || error.message}`);
       toast.error(`Failed to ${initialData ? 'update' : 'add'} book: ${error.response?.data.error || error.message}`);
+      toast.error("Failed to add book!");
     }
   };
   
