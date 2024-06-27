@@ -1,16 +1,14 @@
-import React from 'react';
-import { Book } from '../../types';
 import BookItem from '../bookitem/BookItem';
-import './booktable.scss'
+import { Book } from '../../types';
+import './booktable.scss';
 
 interface BookTableProps {
   books: Book[];
   onEdit: (book: Book) => void;
-  onDelete: (bookId: number) => void; 
+  onDelete: (bookId: number) => void;
 }
 
-
-const BookTable: React.FC<BookTableProps> = ({ books, onEdit, onDelete }) => {
+const BookTable = ({ books, onEdit, onDelete }: BookTableProps): JSX.Element => {
   return (
     <table className='bookTable'>
       <thead>

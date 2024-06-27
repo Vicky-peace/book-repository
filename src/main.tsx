@@ -1,10 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BookProvider } from './context/BookContext.tsx'
 import App from './App.tsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <BookProvider>
+      <App />
+    </BookProvider>
+  </React.StrictMode>
 )

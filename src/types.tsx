@@ -1,6 +1,6 @@
 // Define the structure of a book object
 export interface Book {
-    id: number;
+    id?: number;
     title: string;
     author: string;
     year: string;
@@ -10,14 +10,14 @@ export interface Book {
   export interface BookProps {
     book: Book;
     onEdit: (book: Book) => void;
-    onDelete: (bookId: string) => void;
+    onDelete: (bookId: number) => void;
   }
   
   // Define props for the list of books
   export interface BookListProps {
     books: Book[];
     onEdit: (book: Book) => void;
-    onDelete: (bookId: string) => void;
+    onDelete: (bookId: number) => void;
     
   }
   
@@ -45,4 +45,10 @@ export interface Book {
   
   export type onSubmit = (book: Book) => void;
 
-  
+  export type BookAction =
+  | { type: 'SET_BOOKS'; payload: Book[] }
+  | { type: 'ADD_BOOK'; payload: Book }
+  | { type: 'UPDATE_BOOK'; payload: Book }
+  | { type: 'DELETE_BOOK'; payload: number }
+  | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'SET_ERROR'; payload: string | null };
